@@ -25,7 +25,7 @@ figure;
 subplot(1,2,1);
 E_new = E(2:size(E,1));
 X = [1:size(E_new,1)];
-plot(X,E_new,'m');
+plot(X,E_new,'m','Marker','*');
 hold on;
 title('Training Error');
 xlabel('Number of Epochs');

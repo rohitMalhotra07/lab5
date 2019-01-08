@@ -17,7 +17,7 @@ legend({'ClassA','ClassB'});
 E_new = E(2:size(E,1));
 figure;
 X = [1:size(E_new,1)];
-plot(X,E_new,'b');
+plot(X,E_new,'b','Marker','*');
 
 title('S3801128');
 xlabel('Number of Epochs');
@@ -31,28 +31,28 @@ figure;
 [PA,PB,E] = train_lvq(matA,matB,1,1,0.01,25);
 E_new = E(2:size(E,1));
 X = [1:size(E_new,1)];
-plot(X,E_new,'b');
+plot(X,E_new,'b','Marker','*');
 hold on;
 
 %1-2
 [PA,PB,E] = train_lvq(matA,matB,1,2,0.01,25);
 E_new = E(2:size(E,1));
 X = [1:size(E_new,1)];
-plot(X,E_new,'r');
+plot(X,E_new,'r','Marker','*');
 hold on;
 
 %2-1
 [PA,PB,E] = train_lvq(matA,matB,2,1,0.01,25);
 E_new = E(2:size(E,1));
 X = [1:size(E_new,1)];
-plot(X,E_new,'g');
+plot(X,E_new,'g','Marker','*');
 hold on;
 
 %2-2
 [PA,PB,E] = train_lvq(matA,matB,2,2,0.01,25);
 E_new = E(2:size(E,1));
 X = [1:size(E_new,1)];
-plot(X,E_new,'m');
+plot(X,E_new,'m','Marker','*');
 hold on;
 
 

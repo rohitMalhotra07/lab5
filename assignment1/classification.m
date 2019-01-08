@@ -6,8 +6,8 @@ class_a=[];
 class_b=[];
 
 for i = [1:size(classA,1)]
-    da = min(pdist2(classA(i,:),PA,'euclidean')); %minimum distance of ith sample of class A with all PA
-    db = min(pdist2(classA(i,:),PB,'euclidean')); %minimum distance of ith sample of class A with all PB
+    da = min(pdist2(classA(i,:),PA,'euclidean').^2); %minimum distance of ith sample of class A with all PA
+    db = min(pdist2(classA(i,:),PB,'euclidean').^2); %minimum distance of ith sample of class A with all PB
     
     if da<db
        class_a = [class_a;classA(i,:)];
@@ -17,8 +17,8 @@ for i = [1:size(classA,1)]
 end
 
 for i = [1:size(classB,1)]
-    da = min(pdist2(classB(i,:),PA,'euclidean')); %minimum distance of ith sample of class A with all PA
-    db = min(pdist2(classB(i,:),PB,'euclidean')); %minimum distance of ith sample of class A with all PB
+    da = min(pdist2(classB(i,:),PA,'euclidean').^2); %minimum distance of ith sample of class A with all PA
+    db = min(pdist2(classB(i,:),PB,'euclidean').^2); %minimum distance of ith sample of class A with all PB
     
     if da<db
        class_a = [class_a;classB(i,:)];

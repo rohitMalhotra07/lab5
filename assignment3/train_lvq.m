@@ -38,8 +38,19 @@ while flag
     L1= [L1;l1];
     L2=[L2;l2];
     length_e = length_e +1;
-    if abs(e - last_e) < 0.0001 && length_e > num_epochs
-        flag =false;
+    
+    %This is termination condition if diffeence of current and last one
+    %error is zero and number of epochs is greater than minimum number of
+    %epochs.
+    %if abs(e - last_e) == 0 %&& length_e > num_epochs
+        %flag =false;
+    %end
+    %This is termination condition when last three errors are same.
+    if length_e >= 4 % for comparing last three error.
+        last_three = E(size(E,1)-2:size(E,1),:); % last three elements of E
+        if all(last_three == last_three(1))
+            flag =false;
+        end
     end
 end
 

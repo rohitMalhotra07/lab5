@@ -31,8 +31,18 @@ while flag
     last_e = E(length_e);
     E = [E ; e];
     length_e = length_e +1;
-    if abs(e - last_e) < 0.0001 && length_e > num_epochs
-        flag =false;
+    %This is termination condition if diffeence of current and last one
+    %error is zero and number of epochs is greater than minimum number of
+    %epochs.
+    %if abs(e - last_e) == 0 %&& length_e > num_epochs
+        %flag =false;
+    %end
+    %This is termination condition when last three errors are same.
+    if length_e >= 4 % for comparing last three error.
+        last_three = E(size(E,1)-2:size(E,1),:); % last three elements of E
+        if all(last_three == last_three(1))
+            flag =false;
+        end
     end
 end
 
@@ -55,6 +65,7 @@ for i = [1:(n-1)]
 end
 p(l+1,:) = mean(class(start_i:shape(1),:)); % last prototype will be the mean of last remaining items
 
+%disp(p);
 end
 
 %following function is used to calculate error
@@ -70,16 +81,16 @@ total = rowsA+rowsB; % total number of samples
 wrong = 0 ;%number of wrong classification
 
 for i = [1:rowsA]
-    da = min(pdist2(classA(i,:),PA,'euclidean')); %minimum distance of ith sample of class A with all PA
-    db = min(pdist2(classA(i,:),PB,'euclidean')); %minimum distance of ith sample of class A with all PB
+    da = min(pdist2(classA(i,:),PA,'euclidean').^2); %minimum distance of ith sample of class A with all PA
+    db = min(pdist2(classA(i,:),PB,'euclidean').^2); %minimum distance of ith sample of class A with all PB
     
     if da>db
         wrong = wrong +1 ; % wrong classification
     end
 end
 for i = [1:rowsB]
-    da = min(pdist2(classB(i,:),PA,'euclidean')); %minimum distance of ith sample of class B with all PA
-    db = min(pdist2(classB(i,:),PB,'euclidean')); %minimum distance of ith sample of class B with all PB
+    da = min(pdist2(classB(i,:),PA,'euclidean').^2); %minimum distance of ith sample of class B with all PA
+    db = min(pdist2(classB(i,:),PB,'euclidean').^2); %minimum distance of ith sample of class B with all PB
     
     if db>da
         wrong = wrong +1 ; % wrong classification
@@ -115,7 +126,7 @@ for i = [1:total]
     elseif b_i > rowsB % means all elements of classb are seen
         rand_val = 0;
     else
-        if present_sequentialy
+        if present_sequentialy == true % if we want to present sequentialy.
             rand_val =0; %first present A
         else
             rand_val = randsample([0 1],1);
@@ -133,8 +144,8 @@ for i = [1:total]
     
     %now we have point as sample and its class as rand_val (0 -> A, 1->B)
     
-    [da,xa] = min(pdist2(sample,PA,'euclidean')); %minimum distance of sample with all PA
-    [db,xb] = min(pdist2(sample,PB,'euclidean')); %minimum distance of sample with all PB
+    [da,xa] = min(pdist2(sample,PA,'euclidean').^2); %minimum distance of sample with all PA
+    [db,xb] = min(pdist2(sample,PB,'euclidean').^2); %minimum distance of sample with all PB
     if da<db %means sample is calculated as class a
         if rand_val == 0 %means calculated and given classes are same so pull
             pull = 1;

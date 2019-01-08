@@ -16,15 +16,32 @@ shapeB=size(classB);
 PA = initialize_for_one(classA,npa); 
 PB = initialize_for_one(classB,npb);
 
-
-length_e = 0; % number of epochs till now.
+E = zeros(1,1);
+length_e = 1; % number of epochs till now.
 flag = true; %flag true means keep training
 while flag
     
     [PA,PB] = run_each_epoch(classA,classB,PA,PB,lr,true);
+    e = calculate_error(classA,classB,PA,PB);
+    last_e = E(length_e);
+    E = [E ; e];
     length_e = length_e +1;
-    if length_e >= num_epochs
-        flag =false;
+    %if length_e >= num_epochs
+    %   flag =false;
+    %end
+    
+    %This is termination condition if diffeence of current and last one
+    %error is zero and number of epochs is greater than minimum number of
+    %epochs.
+    %if abs(e - last_e) == 0 %&& length_e > num_epochs
+        %flag =false;
+    %end
+    %This is termination condition when last three errors are same.
+    if length_e >= 4 % for comparing last three error.
+        last_three = E(size(E,1)-2:size(E,1),:); % last three elements of E
+        if all(last_three == last_three(1))
+            flag =false;
+        end
     end
 end
 
@@ -46,7 +63,7 @@ for i = [1:(n-1)]
     l=i;
 end
 p(l+1,:) = mean(class(start_i:shape(1),:)); % last prototype will be the mean of last remaining items
-
+%disp(p);
 end
 
 %following function is code for each epoch
@@ -93,8 +110,8 @@ for i = [1:total]
     
     %now we have point as sample and its class as rand_val (0 -> A, 1->B)
     
-    [da,xa] = min(pdist2(sample,PA,'euclidean')); %minimum distance of sample with all PA
-    [db,xb] = min(pdist2(sample,PB,'euclidean')); %minimum distance of sample with all PB
+    [da,xa] = min(pdist2(sample,PA,'euclidean').^2); %minimum distance of sample with all PA
+    [db,xb] = min(pdist2(sample,PB,'euclidean').^2); %minimum distance of sample with all PB
     if da<db %means sample is calculated as class a
         if rand_val == 0 %means calculated and given classes are same so pull
             pull = 1;
